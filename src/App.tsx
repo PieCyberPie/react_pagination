@@ -57,7 +57,7 @@ export const App: React.FC = () => {
 
       <Pagination
         total={items.length}
-        perPage={selectedPerPageSelector}
+        perPage={+selectedPerPageSelector}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       ></Pagination>

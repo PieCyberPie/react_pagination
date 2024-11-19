@@ -2,7 +2,7 @@ import classNames from 'classnames';
 
 type PaginationProps = {
   total: number;
-  perPage: string;
+  perPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
 };
@@ -13,11 +13,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
 }) => {
-  const numberOfPages = Math.ceil(total / +perPage);
+  const numberOfPages = Math.ceil(total / perPage);
   const pageNumber = Array.from({ length: numberOfPages }, (_, i) => i + 1);
 
-  const firstItemOnPage = Math.min((currentPage - 1) * +perPage + 1, total);
-  const lastItemOnPage = Math.min(currentPage * +perPage, total);
+  const firstItemOnPage = Math.min((currentPage - 1) * perPage + 1, total);
+  const lastItemOnPage = Math.min(currentPage * perPage, total);
 
   const itemsOnPage: number[] = [];
 

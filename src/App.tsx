@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { getNumbers } from './utils';
 import { Pagination } from './components/Pagination';
+import { useSearchParams } from 'react-router-dom';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const items = getNumbers(1, 42).map(n => `Item ${n}`);
 
 export const App: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedPerPageSelector, setSelectedPerPageSelector] = useState('5');
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const perPage = searchParams.get('perPage') || '5';
+
+    setCurrentPage(page);
+    setSelectedPerPageSelector(perPage);
+  }, [searchParams]);
+
+  const updateURL = (page: number, perPage: string) => {
+    setSearchParams({ page: String(page), perPage });
+  };
+
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPerPageSelector(event.target.value);
+    const newPerPage = event.target.value;
+
+    setSelectedPerPageSelector(newPerPage);
     setCurrentPage(1);
+    updateURL(1, newPerPage);
   };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    updateURL(newPage, selectedPerPageSelector);
   };
 
   const from = Math.min(
